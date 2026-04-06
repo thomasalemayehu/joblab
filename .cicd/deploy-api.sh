@@ -9,6 +9,7 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 # Server Configuration
 SERVER_PROJECT_DIR="joblab:~/apps/joblab/api"
+SERVICE_NAME="job-lab"
 
 # Colors for output
 RED='\033[0;31m'
@@ -82,11 +83,11 @@ deploy_api(){
 
     # SSH into server and run commands
     log_info "Prepping api on server..."
-    ssh joblab << EOF
+    ssh joblab <<'EOF'
         cd ~/apps/joblab/api
         npm ci
-        echo "Starting api on server..."
-        npm run start &
+        sudo systemctl restart job-lab.service
+        exit
 EOF
 
     log_info "API deployment completed!"
